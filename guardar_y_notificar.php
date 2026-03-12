@@ -5,8 +5,8 @@
 // =============================================
 
 // CONFIGURACIÓN
-define('BOT_TOKEN', 'AQUI_PONES_EL_TOKEN_DE_TU_BOT');
-define('CHAT_ID', 'AQUI_PONES_TU_CHAT_ID');
+define('8605186812:AAET8973lR2dwBr10G_hsw2jbL6yaxLvBPI', 'AQUI_PONES_EL_TOKEN_DE_TU_BOT');
+define('7891650726', 'AQUI_PONES_TU_CHAT_ID');
 // =============================================
 
 // Recibir datos
